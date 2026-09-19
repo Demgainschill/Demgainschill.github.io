@@ -3,6 +3,12 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+	.filter((p) => !p.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 5);
 ---
 
 <!doctype html>
@@ -10,40 +16,179 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-	<body>
+	<body class="home">
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your{' '}
-				<code>astro.config.mjs</code> file. You can customize your setup with{' '}
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to{' '}
-				<a href="https://docs.astro.build/">read the docs</a>{' '}
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out{' '}
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>{' '}
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section class="hero">
+				<p class="eyebrow">Notes &amp; writing</p>
+				<h1>Quiet pages.<br />Clear thinking.</h1>
+				<p class="lede">
+					A small site for long-form notes on systems, security, and the work in between.
+					No noise. Just what is worth keeping.
+				</p>
+				<div class="actions">
+					<a class="btn primary" href="/blog">Read the blog</a>
+					<a class="btn ghost" href="/about">About</a>
+				</div>
+			</section>
+
+			<section class="list">
+				<div class="list-head">
+					<h2>Latest</h2>
+					<a href="/blog">All posts →</a>
+				</div>
+				<ul>
+					{
+						posts.map((post) => (
+							<li>
+								<a href={`/blog/${post.id}/`}>
+									<time datetime={post.data.pubDate.toISOString()}>
+										{post.data.pubDate.toLocaleDateString('en-IN', {
+											year: 'numeric',
+											month: 'short',
+											day: '2-digit',
+										})}
+									</time>
+									<span class="title">{post.data.title}</span>
+									<span class="desc">{post.data.description}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.home {
+		background: #f4f1ea;
+		color: #2b2925;
+	}
+	main {
+		width: min(720px, calc(100% - 2.5rem));
+		margin: 0 auto;
+		padding: 3.5rem 0 5rem;
+	}
+	.hero {
+		padding: 2.5rem 0 3rem;
+		border-bottom: 1px solid #e2ddd3;
+	}
+	.eyebrow {
+		margin: 0 0 1rem;
+		font-size: 0.72rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #7a756c;
+	}
+	h1 {
+		margin: 0;
+		font-size: clamp(2.2rem, 5vw, 3.4rem);
+		line-height: 1.12;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+		color: #1f1d1a;
+	}
+	.lede {
+		max-width: 36rem;
+		margin: 1.25rem 0 2rem;
+		font-size: 1.08rem;
+		line-height: 1.7;
+		color: #5c5850;
+	}
+	.actions {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+	.btn {
+		display: inline-block;
+		padding: 0.65rem 1.1rem;
+		border-radius: 999px;
+		font-size: 0.92rem;
+		text-decoration: none;
+		border: 1px solid #d9d3c8;
+	}
+	.btn.primary {
+		background: #2b2925;
+		color: #f6f3ee;
+		border-color: #2b2925;
+	}
+	.btn.ghost {
+		background: #faf8f4;
+		color: #2b2925;
+	}
+	.btn.primary:hover { background: #1a1916; }
+	.btn.ghost:hover { background: #efebe3; }
+	.list {
+		padding-top: 2.5rem;
+	}
+	.list-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 0.5rem;
+	}
+	.list-head h2 {
+		margin: 0;
+		font-size: 0.8rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: #7a756c;
+		font-weight: 600;
+	}
+	.list-head a {
+		font-size: 0.9rem;
+		color: #5c5850;
+		text-decoration: none;
+	}
+	.list ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.list li + li {
+		border-top: 1px solid #e2ddd3;
+	}
+	.list a {
+		display: grid;
+		grid-template-columns: 7.5rem 1fr;
+		grid-template-areas:
+			"time title"
+			". desc";
+		gap: 0.15rem 1.25rem;
+		padding: 1.15rem 0;
+		text-decoration: none;
+		color: inherit;
+	}
+	.list time {
+		grid-area: time;
+		font-size: 0.85rem;
+		color: #8a857c;
+	}
+	.list .title {
+		grid-area: title;
+		font-weight: 600;
+		color: #1f1d1a;
+	}
+	.list .desc {
+		grid-area: desc;
+		font-size: 0.92rem;
+		color: #6a665e;
+	}
+	.list a:hover .title {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	@media (max-width: 560px) {
+		.list a {
+			grid-template-columns: 1fr;
+			grid-template-areas:
+				"time"
+				"title"
+				"desc";
+		}
+	}
+</style>

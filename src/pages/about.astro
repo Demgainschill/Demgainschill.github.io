@@ -1,63 +1,194 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+	.filter((p) => !p.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 5);
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body class="home">
+		<Header />
+		<main>
+			<section class="hero">
+				<p class="eyebrow">Notes &amp; writing</p>
+				<h1>Quiet pages.<br />Clear thinking.</h1>
+				<p class="lede">
+					A small site for long-form notes on systems, security, and the work in between.
+					No noise. Just what is worth keeping.
+				</p>
+				<div class="actions">
+					<a class="btn primary" href="/blog">Read the blog</a>
+					<a class="btn ghost" href="/about">About</a>
+				</div>
+			</section>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+			<section class="list">
+				<div class="list-head">
+					<h2>Latest</h2>
+					<a href="/blog">All posts →</a>
+				</div>
+				<ul>
+					{
+						posts.map((post) => (
+							<li>
+								<a href={`/blog/${post.id}/`}>
+									<time datetime={post.data.pubDate.toISOString()}>
+										{post.data.pubDate.toLocaleDateString('en-IN', {
+											year: 'numeric',
+											month: 'short',
+											day: '2-digit',
+										})}
+									</time>
+									<span class="title">{post.data.title}</span>
+									<span class="desc">{post.data.description}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
-
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
-
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+<style>
+	.home {
+		background: #f4f1ea;
+		color: #2b2925;
+	}
+	main {
+		width: min(720px, calc(100% - 2.5rem));
+		margin: 0 auto;
+		padding: 3.5rem 0 5rem;
+	}
+	.hero {
+		padding: 2.5rem 0 3rem;
+		border-bottom: 1px solid #e2ddd3;
+	}
+	.eyebrow {
+		margin: 0 0 1rem;
+		font-size: 0.72rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #7a756c;
+	}
+	h1 {
+		margin: 0;
+		font-size: clamp(2.2rem, 5vw, 3.4rem);
+		line-height: 1.12;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+		color: #1f1d1a;
+	}
+	.lede {
+		max-width: 36rem;
+		margin: 1.25rem 0 2rem;
+		font-size: 1.08rem;
+		line-height: 1.7;
+		color: #5c5850;
+	}
+	.actions {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+	.btn {
+		display: inline-block;
+		padding: 0.65rem 1.1rem;
+		border-radius: 999px;
+		font-size: 0.92rem;
+		text-decoration: none;
+		border: 1px solid #d9d3c8;
+	}
+	.btn.primary {
+		background: #2b2925;
+		color: #f6f3ee;
+		border-color: #2b2925;
+	}
+	.btn.ghost {
+		background: #faf8f4;
+		color: #2b2925;
+	}
+	.btn.primary:hover { background: #1a1916; }
+	.btn.ghost:hover { background: #efebe3; }
+	.list {
+		padding-top: 2.5rem;
+	}
+	.list-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 0.5rem;
+	}
+	.list-head h2 {
+		margin: 0;
+		font-size: 0.8rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: #7a756c;
+		font-weight: 600;
+	}
+	.list-head a {
+		font-size: 0.9rem;
+		color: #5c5850;
+		text-decoration: none;
+	}
+	.list ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.list li + li {
+		border-top: 1px solid #e2ddd3;
+	}
+	.list a {
+		display: grid;
+		grid-template-columns: 7.5rem 1fr;
+		grid-template-areas:
+			"time title"
+			". desc";
+		gap: 0.15rem 1.25rem;
+		padding: 1.15rem 0;
+		text-decoration: none;
+		color: inherit;
+	}
+	.list time {
+		grid-area: time;
+		font-size: 0.85rem;
+		color: #8a857c;
+	}
+	.list .title {
+		grid-area: title;
+		font-weight: 600;
+		color: #1f1d1a;
+	}
+	.list .desc {
+		grid-area: desc;
+		font-size: 0.92rem;
+		color: #6a665e;
+	}
+	.list a:hover .title {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	@media (max-width: 560px) {
+		.list a {
+			grid-template-columns: 1fr;
+			grid-template-areas:
+				"time"
+				"title"
+				"desc";
+		}
+	}
+</style>
