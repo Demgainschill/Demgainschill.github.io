@@ -43,6 +43,7 @@ import HeaderLink from './HeaderLink.astro';
 	h2 {
 		margin: 0;
 		font-size: 1em;
+		min-width: 0;
 	}
 	h2 a,
 	h2 a.active {
@@ -54,6 +55,12 @@ import HeaderLink from './HeaderLink.astro';
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0 0.25rem;
+	}
+	.internal-links {
+		display: flex;
+		flex-wrap: wrap;
 	}
 	nav a {
 		padding: 1em 0.5em;
@@ -73,6 +80,12 @@ import HeaderLink from './HeaderLink.astro';
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
+		}
+		header {
+			padding: 0 0.75em;
+		}
+		nav a {
+			padding: 0.85em 0.4em;
 		}
 	}
 </style>

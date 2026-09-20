@@ -170,3 +170,15 @@ hr {
 	background: var(--rule);
 	box-shadow: var(--rule-shadow);
 }
+html,
+body {
+	min-height: 100%;
+}
+body {
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+}
+main {
+	flex: 1 0 auto;
+}
