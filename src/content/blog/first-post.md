@@ -2,7 +2,7 @@
 title: 'LVM on RAID'
 description: 'Build the array first. Let LVM slice what already survives a disk death.'
 pubDate: 'Sep 20 2026'
-heroImage: '../../assets/lvm-on-raid1.jpg'
+heroImage: '../../assets/lvm-on-raid2.jpg'
 ---
 
 The stack is not a taste. It is a failure domain.
