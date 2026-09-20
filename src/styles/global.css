@@ -139,3 +139,31 @@ hr {
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
+:root {
+	--rule: #e2ddd3;
+	--rule-shadow:
+		0 1px 0 rgba(43, 41, 37, 0.06),
+		0 6px 14px rgba(43, 41, 37, 0.035);
+}
+
+hr,
+.hero,
+.list li + li,
+.block,
+.copy section,
+.rail-card,
+.meta,
+.panel,
+.pane,
+.prose table,
+#site-header,
+footer {
+	box-shadow: var(--rule-shadow);
+}
+
+hr {
+	border: none;
+	height: 1px;
+	background: var(--rule);
+	box-shadow: var(--rule-shadow);
+}

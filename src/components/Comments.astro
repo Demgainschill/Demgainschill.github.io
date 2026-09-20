@@ -1,0 +1,46 @@
+---
+const repo = 'Demgainschill/Demgainschill.github.io';
+const repoId = 'PASTE_REPO_ID';
+const category = 'Comments';
+const categoryId = 'PASTE_CATEGORY_ID';
+---
+
+<section class="comments">
+	<h2>Comments</h2>
+	<div class="giscus"></div>
+</section>
+
+<script
+	src="https://giscus.app/client.js"
+	data-repo={repo}
+	data-repo-id={repoId}
+	data-category={category}
+	data-category-id={categoryId}
+	data-mapping="pathname"
+	data-strict="1"
+	data-reactions-enabled="1"
+	data-emit-metadata="0"
+	data-input-position="bottom"
+	data-theme="noborder_light"
+	data-lang="en"
+	data-loading="lazy"
+	crossorigin="anonymous"
+	async
+></script>
+
+<style>
+	.comments {
+		margin-top: 2.5rem;
+		padding-top: 1.6rem;
+		border-top: 1px solid #e2ddd3;
+		box-shadow: var(--rule-shadow, 0 1px 0 rgba(43, 41, 37, 0.06));
+	}
+	.comments h2 {
+		margin: 0 0 1rem;
+		font-size: 0.8rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: #7a756c;
+		font-weight: 600;
+	}
+</style>

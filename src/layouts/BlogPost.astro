@@ -5,6 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import Comments from '../components/Comments.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -14,73 +15,202 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
 	</head>
-
-	<body>
+	<body class="post">
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
+				<header class="mast">
+					<p class="date">
+						<FormattedDate date={pubDate} />
+						{
+							updatedDate && (
+								<span class="updated">
+									{' '}· updated <FormattedDate date={updatedDate} />
+								</span>
+							)
+						}
+					</p>
+					<h1>{title}</h1>
+					{description && <p class="deck">{description}</p>}
+				</header>
+
+				{
+					heroImage && (
+						<figure class="hero">
+							<Image width={1200} height={800} src={heroImage} alt="" />
+						</figure>
+					)
+				}
+
 				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
 					<slot />
+					<Comments />
 				</div>
 			</article>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style is:global>
+	.post {
+		background: #f4f1ea;
+		color: #2b2925;
+	}
+	.post main {
+		width: min(860px, calc(100% - 2.5rem));
+		margin: 0 auto;
+		padding: 2.75rem 0 5rem;
+	}
+	.mast {
+		padding: 0.25rem 0 1.75rem;
+	}
+	.mast .date {
+		margin: 0 0 0.85rem;
+		font-size: 0.72rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: #7a756c;
+	}
+	.mast .updated {
+		text-transform: none;
+		letter-spacing: 0;
+	}
+	.mast h1 {
+		margin: 0;
+		font-size: clamp(2.2rem, 5vw, 3.2rem);
+		line-height: 1.12;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+		color: #1f1d1a;
+	}
+	.mast .deck {
+		max-width: 36rem;
+		margin: 0.9rem 0 0;
+		font-size: 1.06rem;
+		line-height: 1.65;
+		color: #5c5850;
+	}
+	.hero {
+		margin: 0 0 2.25rem;
+		border-radius: 1.15rem;
+		overflow: hidden;
+		border: 1px solid #e2ddd3;
+		background: #efebe3;
+		box-shadow: 0 18px 40px rgba(43, 41, 37, 0.08);
+	}
+	.hero img {
+		display: block;
+		width: 100%;
+		height: auto;
+		filter: saturate(0.86) contrast(1.02);
+	}
+	.prose {
+		color: #5c5850;
+		font-size: 1.04rem;
+		line-height: 1.75;
+	}
+	.prose > p,
+	.prose > ul,
+	.prose > ol,
+	.prose > pre,
+	.prose > table {
+		margin: 0 0 1.15rem;
+	}
+	.prose h2 {
+		margin: 2.1rem 0 0.8rem;
+		font-size: 0.8rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: #7a756c;
+		font-weight: 600;
+	}
+	.prose h3 {
+		margin: 0 0 0.7rem;
+		font-size: 1.05rem;
+		letter-spacing: -0.02em;
+		color: #1f1d1a;
+		font-weight: 600;
+		text-transform: none;
+	}
+	.prose a {
+		color: #1f1d1a;
+	}
+	.prose pre {
+		padding: 1rem 1.1rem;
+		overflow-x: auto;
+		border-radius: 0.85rem;
+		border: 1px solid #e2ddd3;
+		background: #1f1d1a;
+		color: #f4f1ea;
+		font-size: 0.86rem;
+		line-height: 1.55;
+		box-shadow: 0 10px 24px rgba(43, 41, 37, 0.08);
+	}
+	.prose code {
+		font-size: 0.9em;
+	}
+	.prose p code,
+	.prose li code {
+		padding: 0.1em 0.35em;
+		border-radius: 0.3em;
+		background: #ece8e0;
+		color: #1f1d1a;
+	}
+	.prose pre code {
+		padding: 0;
+		background: transparent;
+		color: inherit;
+	}
+	.prose table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.95rem;
+	}
+	.prose th,
+	.prose td {
+		text-align: left;
+		padding: 0.65rem 0.5rem;
+		border-bottom: 1px solid #e2ddd3;
+		vertical-align: top;
+	}
+	.prose th {
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: #7a756c;
+		font-weight: 600;
+	}
+
+	.split {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.1rem;
+		margin: 1.5rem 0 1.75rem;
+	}
+	.pane {
+		padding: 1.15rem 1.2rem 1.25rem;
+		border-radius: 1rem;
+		border: 1px solid #e2ddd3;
+		background: rgba(250, 248, 244, 0.72);
+		box-shadow: 0 14px 32px rgba(43, 41, 37, 0.07);
+		backdrop-filter: blur(10px);
+	}
+	.pane p,
+	.pane pre {
+		margin-bottom: 0.85rem;
+	}
+	.pane pre {
+		margin-bottom: 0;
+	}
+	.pane > :last-child {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 700px) {
+		.split {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
