@@ -1,0 +1,66 @@
+/* Phone + tablet layer. Import last from global.css */
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+img,
+video,
+iframe {
+	max-width: 100%;
+	height: auto;
+}
+
+pre,
+.code,
+.prose pre {
+	max-width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.prose table {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 720px) {
+
+	.split {
+		grid-template-columns: 1fr !important;
+	}
+
+	.list a {
+		grid-template-columns: 1fr !important;
+		grid-template-areas:
+			"time"
+			"title"
+			"desc" !important;
+		gap: 0.2rem !important;
+	}
+
+	.hero img,
+	.panel img {
+		height: auto !important;
+		max-height: 16.5rem;
+		object-fit: cover;
+	}
+}
+
+@media (max-width: 420px) {
+	.full-name {
+		display: none;
+	}
+	.short-name {
+		display: inline;
+	}
+}
+
+@media (min-width: 421px) {
+	.short-name {
+		display: none;
+	}
+}

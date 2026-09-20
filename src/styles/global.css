@@ -3,7 +3,7 @@
   https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
-
+@import './responsive.css';
 :root {
 	--accent: #2337ff;
 	--accent-dark: #000d8a;
@@ -30,10 +30,11 @@ body {
 	line-height: 1.7;
 }
 main {
-	width: 720px;
-	max-width: calc(100% - 2em);
+	width: 100%;
+	max-width: 720px;
 	margin: auto;
 	padding: 3em 1em;
+	box-sizing: border-box;
 }
 h1,
 h2,
@@ -99,6 +100,8 @@ code {
 pre {
 	padding: 1.5em;
 	border-radius: 8px;
+	max-width: 100%;
+	overflow-x: auto;
 }
 pre > code {
 	all: unset;
